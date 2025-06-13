@@ -1,7 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { LuChefHat } from "react-icons/lu";
+import { useAuth } from "../store/useAuth";
 
 export default function NavBar() {
+    const { isAuthenticated, logout } = useAuth();
+
+    function handleLogout() {
+        logout();
+    }
+
     return (
         <div className="navbar bg-base-100 shadow-sm sticky top-0 mb-5 z-50 ">
             <div className="container mx-auto flex items-center">
@@ -15,23 +24,30 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <div className="flex-none">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="menu menu-horizontal px-1 flex items-center gap-3">
                         <li>
-                            <a>Link</a>
+                            <Link href={"/recipes"}>Recipes</Link>
                         </li>
                         <li>
-                            <details>
-                                <summary>Parent</summary>
-                                <ul className="bg-base-100 rounded-t-none p-2">
-                                    <li>
-                                        <a>Link 1</a>
-                                    </li>
-                                    <li>
-                                        <a>Link 2</a>
-                                    </li>
-                                </ul>
-                            </details>
+                            <Link href={"/create-recipe"}>Create Recipe</Link>
                         </li>
+                        {isAuthenticated ? (
+                            <button
+                                className="btn btn-soft btn-error"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <li>
+                                <Link
+                                    className="btn btn-primary"
+                                    href={"/login"}
+                                >
+                                    Login
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
